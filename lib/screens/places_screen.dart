@@ -1,18 +1,21 @@
+import 'package:fav_places/providers/places_provider.dart';
 import 'package:fav_places/screens/new_place.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlacessScreen extends StatefulWidget {
+class PlacessScreen extends ConsumerStatefulWidget {
   const PlacessScreen({super.key});
 
   @override
-  State<PlacessScreen> createState() {
+  ConsumerState<PlacessScreen> createState() {
     return _PlacessScreen();
   }
 }
 
-class _PlacessScreen extends State<PlacessScreen> {
+class _PlacessScreen extends ConsumerState<PlacessScreen> {
   @override
   Widget build(BuildContext context) {
+    final places = ref.watch(placesProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Places'),
@@ -26,8 +29,15 @@ class _PlacessScreen extends State<PlacessScreen> {
         ],
       ),
       body: (ListView.builder(
-        itemCount: 6,
-        itemBuilder: (context, index) => const Text('Taj mahal'),
+        itemCount: places.length,
+        itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.all(14),
+          child: Text(
+            places[index].name,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge!,
+          ),
+        ),
       )),
     );
   }

@@ -1,32 +1,63 @@
+import 'package:fav_places/models/places.dart';
+import 'package:fav_places/providers/places_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewPlace extends StatelessWidget {
+class NewPlace extends ConsumerStatefulWidget {
   NewPlace({super.key});
 
+  @override
+  ConsumerState<NewPlace> createState() => _NewPlaceState();
+}
+
+class _NewPlaceState extends ConsumerState<NewPlace> {
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    var _title = '';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add a item'),
       ),
-      body: (Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              decoration:
-                  const InputDecoration(label: Text('Enter the name of place')),
-            ),
-            ElevatedButton(
-                onPressed: () {},
-                child: Row(
-                  children: const [Icon(Icons.add), Text('add a new place')],
-                ))
-          ],
-        ),
-      )),
+      body: Padding(
+        padding: const EdgeInsets.all(13),
+        child: (Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                onChanged: (value) {
+                  _title = value;
+                },
+                decoration: const InputDecoration(
+                    label: Text('Enter the name of place')),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Container(
+                width: 155,
+                child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        ref
+                            .read(placesProvider.notifier)
+                            .addItem(Places(name: _title));
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.add),
+                        Text('add a new place')
+                      ],
+                    )),
+              )
+            ],
+          ),
+        )),
+      ),
     );
   }
 }
