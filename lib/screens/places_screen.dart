@@ -1,5 +1,6 @@
 import 'package:fav_places/providers/places_provider.dart';
 import 'package:fav_places/screens/new_place.dart';
+import 'package:fav_places/screens/places_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,18 +18,27 @@ class _PlacessScreen extends ConsumerState<PlacessScreen> {
   Widget build(BuildContext context) {
     final places = ref.watch(placesProvider);
     Widget content = places.isEmpty
-        ? const Text('No places are here')
+        ? Center(
+            child: Text(
+              'No places are here',
+              style: Theme.of(context).textTheme.titleLarge!,
+            ),
+          )
         : ListView.builder(
             itemCount: places.length,
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.all(14),
-              child: Text(
+            itemBuilder: (context, index) => ListTile(
+              title: Text(
                 places[index].name,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge!,
               ),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => PlaceDetailScreen(place: places[index])));
+              },
             ),
           );
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Places'),

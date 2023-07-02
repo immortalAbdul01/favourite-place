@@ -32,13 +32,14 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
                 },
                 decoration: const InputDecoration(
                     label: Text('Enter the name of place')),
+                style: TextStyle(color: Colors.white),
               ),
               const SizedBox(
                 height: 12,
               ),
               Container(
-                width: 155,
-                child: ElevatedButton(
+                  width: 155,
+                  child: ElevatedButton.icon(
                     onPressed: () {
                       setState(() {
                         ref
@@ -47,13 +48,9 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
                       });
                       Navigator.of(context).pop();
                     },
-                    child: Row(
-                      children: const [
-                        Icon(Icons.add),
-                        Text('add a new place')
-                      ],
-                    )),
-              )
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add a place'),
+                  ))
             ],
           ),
         )),
