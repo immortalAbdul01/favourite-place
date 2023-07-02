@@ -1,4 +1,9 @@
+import 'package:uuid/uuid.dart';
+
+const uuid = Uuid();
+
 class Places {
-  const Places({required this.name});
+  Places({required this.name}) : id = uuid.v4();
   final String name;
+  final String id;
 }

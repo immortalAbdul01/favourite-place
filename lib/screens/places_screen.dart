@@ -16,29 +16,31 @@ class _PlacessScreen extends ConsumerState<PlacessScreen> {
   @override
   Widget build(BuildContext context) {
     final places = ref.watch(placesProvider);
+    Widget content = places.isEmpty
+        ? const Text('No places are here')
+        : ListView.builder(
+            itemCount: places.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(14),
+              child: Text(
+                places[index].name,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleLarge!,
+              ),
+            ),
+          );
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Places'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (ctx) => NewPlace()));
-              })
-        ],
-      ),
-      body: (ListView.builder(
-        itemCount: places.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.all(14),
-          child: Text(
-            places[index].name,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge!,
-          ),
+        appBar: AppBar(
+          title: const Text('Places'),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (ctx) => NewPlace()));
+                })
+          ],
         ),
-      )),
-    );
+        body: content);
   }
 }
