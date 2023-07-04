@@ -3,6 +3,8 @@ import 'package:fav_places/providers/places_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'dart:io';
+
 // custom imports
 
 import 'package:fav_places/widgets/image_input.dart';
@@ -15,12 +17,14 @@ class NewPlace extends ConsumerStatefulWidget {
 }
 
 class _NewPlaceState extends ConsumerState<NewPlace> {
+  File? _selectedImage;
+
   void _addNewPlace(String _title) {
-    if (_title == null || _title.isEmpty) {
+    if (_title.isEmpty || _selectedImage == null) {
       return;
     }
     setState(() {
-      ref.read(placesProvider.notifier).addItem(Places(name: _title));
+      ref.read(placesProvider.notifier).addPlace(_title, _selectedImage!);
     });
     Navigator.of(context).pop();
   }
@@ -34,8 +38,8 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
       appBar: AppBar(
         title: const Text('Add a item'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(13),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(12),
         child: (Form(
           key: _formKey,
           child: Column(
@@ -51,7 +55,11 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
               const SizedBox(
                 height: 12,
               ),
-              const ImageInput(),
+              ImageInput(
+                onPick: (image) {
+                  _selectedImage = image;
+                },
+              ),
               const SizedBox(
                 height: 20,
               ),

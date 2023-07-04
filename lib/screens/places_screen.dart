@@ -27,9 +27,13 @@ class _PlacessScreen extends ConsumerState<PlacessScreen> {
         : ListView.builder(
             itemCount: places.length,
             itemBuilder: (context, index) => ListTile(
+              leading: CircleAvatar(
+                radius: 35,
+                backgroundImage: FileImage(places[index].image),
+              ),
               title: Text(
                 places[index].name,
-                textAlign: TextAlign.center,
+                // textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge!,
               ),
               onTap: () {

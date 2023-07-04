@@ -12,11 +12,9 @@ class PlaceDetailScreen extends StatelessWidget {
         title: Text('${place.name}  details'),
       ),
       body: Center(
-        child: Text(
-          place.name,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
+          child: Column(
+        children: [Image.file(place.image), Text(place.name)],
+      )),
     ));
   }
 }
