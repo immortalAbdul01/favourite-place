@@ -3,6 +3,10 @@ import 'package:fav_places/providers/places_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// custom imports
+
+import 'package:fav_places/widgets/image_input.dart';
+
 class NewPlace extends ConsumerStatefulWidget {
   NewPlace({super.key});
 
@@ -11,11 +15,21 @@ class NewPlace extends ConsumerStatefulWidget {
 }
 
 class _NewPlaceState extends ConsumerState<NewPlace> {
+  void _addNewPlace(String _title) {
+    if (_title == null || _title.isEmpty) {
+      return;
+    }
+    setState(() {
+      ref.read(placesProvider.notifier).addItem(Places(name: _title));
+    });
+    Navigator.of(context).pop();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    var _title = '';
+    var _title;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add a item'),
@@ -37,20 +51,19 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
               const SizedBox(
                 height: 12,
               ),
+              const ImageInput(),
+              const SizedBox(
+                height: 20,
+              ),
               Container(
                   width: 155,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      setState(() {
-                        ref
-                            .read(placesProvider.notifier)
-                            .addItem(Places(name: _title));
-                      });
-                      Navigator.of(context).pop();
+                      _addNewPlace(_title);
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add a place'),
-                  ))
+                  )),
             ],
           ),
         )),
